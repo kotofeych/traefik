@@ -24,6 +24,6 @@ provisioner:
   options:
     vvv: true
   ansible_args:
-    - --inventory=/home/kot/Projects/VST/git.vstconsulting.net/traefik/inventory.yaml
+    - --inventory=""
 verifier:
   name: testinfra

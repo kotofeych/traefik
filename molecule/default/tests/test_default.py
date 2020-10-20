@@ -54,7 +54,7 @@ providers:
 certificatesResolvers:
   default_le_resolver:
     acme:
-      email: main_email@vst.com
+      email: main_email@example.com
       storage: /etc/traefik/acme/acme.json
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:

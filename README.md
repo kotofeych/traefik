@@ -36,7 +36,7 @@ Required parameters: `main` and `sans`.
 traefik_http_dynamic_config:
   - name: 'name_config__HTTP__'
     services_url: 'http://172.16.1.10:9000'
-    domain: 'test-http.vst.lan'
+    domain: 'test-http.example.com'
   - name: 'name_config__HTTPS__1'
     services_url: 'http://172.16.1.10:9000'
     domain: 'subdomain.example.com'
@@ -45,7 +45,7 @@ traefik_http_dynamic_config:
       sans: '*.testdomain.example.com'
   - name: 'name_config__HTTPS__2'
     services_url: 'http://172.16.1.10:9000'
-    domain: 'test.vst.lan'
+    domain: 'test.example.com'
     tls: {}
 ```
 
@@ -84,7 +84,7 @@ There are variables to use letsencrypt service:
 # Example:
 traefik_le_caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
 traefik_le_challenge_type: "dnsChallenge"
-traefik_le_email: "testemail@vst.ru"
+traefik_le_email: "testemail@example.com"
 traefik_le_dns_challenge_provider: "route53"
 ```
 * `traefik_tls_provider_environments` - sets an additional environment variable for the provider.
