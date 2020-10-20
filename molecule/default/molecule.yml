@@ -1,0 +1,29 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+  options:
+    ignore-certs: true
+    ignore-errors: true
+    role-file: .
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  flake8
+  ansible-lint
+platforms:
+  - name: Ubuntu-18.04
+    image: vstconsulting/images:ubuntu
+  - name: Centos-7
+    image: vstconsulting/images:centos7
+provisioner:
+  name: ansible
+  log: true
+  options:
+    vvv: true
+  ansible_args:
+    - --inventory=/home/kot/Projects/VST/git.vstconsulting.net/traefik/inventory.yaml
+verifier:
+  name: testinfra

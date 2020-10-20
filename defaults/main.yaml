@@ -1,0 +1,25 @@
+---
+# Traefik info
+traefik_distr_ver: "v2.3.2"
+traefik_distr_os: "linux"
+traefik_distr_arch: "amd64"
+
+# Traefik URL Path
+traefik_distr_ver_and_os: >-
+  traefik_{{ traefik_distr_ver }}_{{ traefik_distr_os }}
+traefik_distr_full_name: >-
+  {{ traefik_distr_ver_and_os }}_{{ traefik_distr_arch }}.tar.gz
+traefik_url_path: >-
+  https://github.com/containous/traefik/releases/download/
+traefik_url_release: >-
+  {{ traefik_url_path }}{{ traefik_distr_ver }}/{{ traefik_distr_full_name }}
+molecule_test_run: false
+
+# Path
+traefik_path_bin: "/usr/bin"
+traefik_binary: "{{ traefik_path_bin }}/traefik_{{ traefik_distr_ver }}"
+
+# LE
+traefik_le_caserver: "https://acme-v02.api.letsencrypt.org/directory"
+traefik_le_challenge_type: "httpChallenge"
+traefik_le_email: ""

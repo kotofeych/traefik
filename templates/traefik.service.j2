@@ -1,0 +1,21 @@
+# https://raw.githubusercontent.com/containous/traefik/master/contrib/systemd/traefik.service
+
+[Unit]
+Description=Traefik
+Documentation=https://docs.traefik.io
+AssertFileIsExecutable={{ traefik_binary }}
+AssertPathExists=/etc/traefik/traefik.yaml
+
+[Service]
+{% if traefik_tls_provider_environments is defined and traefik_tls_provider_environments %}
+{% for dict in traefik_tls_provider_environments %}
+Environment="{{ dict['name'] }}={{ dict['value'] }}"
+{% endfor %}
+{% endif %}
+Type=notify
+ExecStart={{ traefik_binary }}
+Restart=always
+WatchdogSec=1s
+
+[Install]
+WantedBy=multi-user.target

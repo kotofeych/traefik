@@ -1,0 +1,6 @@
+---
+- hosts: all
+  vars:
+    molecule_test_run: true
+  roles:
+    - role: traefik

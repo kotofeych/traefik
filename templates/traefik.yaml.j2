@@ -1,0 +1,44 @@
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+  traefik:
+    address: ":8080"
+{% if traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config -%}
+{% for EntryPoint in traefik_tcp_dynamic_config %}
+{%- if EntryPoint['port'] is defined and EntryPoint['port'] %}
+  {{ EntryPoint['name'] }}:
+    address: ":{{ EntryPoint['port'] }}"
+{% endif %}
+{% endfor %}
+{%- endif %}
+
+providers:
+  file:
+    directory: /etc/traefik/dynamic/
+    watch: false
+
+{% if traefik_le_email -%}
+certificatesResolvers:
+  default_le_resolver:
+    acme:
+      email: {{ traefik_le_email }}
+      storage: /etc/traefik/acme/acme.json
+      caServer: {{ traefik_le_caserver }}
+{% if traefik_le_challenge_type == "dnsChallenge" and traefik_le_dns_challenge_provider %}
+      dnsChallenge:
+        provider: {{ traefik_le_dns_challenge_provider }}
+{% elif traefik_le_challenge_type == "httpChallenge" %}
+      httpChallenge:
+        entryPoint: http
+{%- endif %}
+{% endif %}
+
+api:
+  dashboard: true
+  insecure: true
+  debug: true
+
+log:
+  level: DEBUG
