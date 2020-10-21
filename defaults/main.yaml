@@ -23,3 +23,7 @@ traefik_binary: "{{ traefik_path_bin }}/traefik_{{ traefik_distr_ver }}"
 traefik_le_caserver: "https://acme-v02.api.letsencrypt.org/directory"
 traefik_le_challenge_type: "httpChallenge"
 traefik_le_email: ""
+
+# TLS default cert
+traefik_tls_cert: ""
+traefik_tls_key: ""

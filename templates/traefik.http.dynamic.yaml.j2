@@ -2,7 +2,11 @@
 http:
   routers:
     http_{{ item.name }}:
+{% if item.raw_domain is defined and item.raw_domain %}
+      rule: {{ item.raw_domain }}
+{% elif item.domain is defined and item.domain %}
       rule: Host(`{{ item.domain }}`)
+{% endif %}
       entrypoints:
         - http
       service: {{ item.name }}
@@ -10,7 +14,11 @@ http:
       middlewares:
       - redirect-http-to-https
     https_{{ item.name }}:
+{% if item.raw_domain is defined and item.raw_domain %}
+      rule: {{ item.raw_domain }}
+{% elif item.domain is defined and item.domain %}
       rule: Host(`{{ item.domain }}`)
+{% endif %}
       entrypoints:
         - https
       service: {{ item.name }}

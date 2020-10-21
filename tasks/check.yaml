@@ -7,8 +7,10 @@
       - item.name | length > 0
       - item.services_url is defined
       - item.services_url | length > 0
-      - item.domain is defined
-      - item.domain | length > 0
+      - >-
+        (item.domain is defined and item.domain | length > 0) or
+        (item.raw_domain is defined and item.raw_domain | length > 0)
+      - not (item.domain is defined and item.raw_domain is defined)
     quiet: true
   with_items: "{{ traefik_http_dynamic_config }}"
   when: traefik_http_dynamic_config is defined and traefik_http_dynamic_config

@@ -24,6 +24,6 @@ provisioner:
   options:
     vvv: true
   ansible_args:
-    - --inventory=""
+    - --inventory=inventory.yaml
 verifier:
   name: testinfra
