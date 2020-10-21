@@ -22,7 +22,7 @@ The `traefik_http_dynamic_config` variable describes the configuration of servic
 Required variables: `name`, `services_url`, `domain`.
 * `name` - The name of your configuration.
 * `services_url` - Service address.
-* `domain` or `` - The domain on which the service will run.
+* `domain` or `raw_domain` - The domain on which the service will run.
 
 [Rule http. Resource link](https://doc.traefik.io/traefik/routing/routers/#rule)
 
@@ -49,7 +49,9 @@ traefik_http_dynamic_config:
   # https with Let`s Encrypt cert + traefik ruled Host
   - name: 'name_config__HTTPS__1'
     services_url: 'http://172.16.1.10:9000'
-    raw_domain: 'testdomain.example.com'
+    raw_domain: >-
+      'HostRegexp(`testdomain2.example.com`,
+      `{subdomain:[a-zA-Z0-9-]+}.testdomain2.example.com`)'
     tls_resolver:
       main: 'testdomain.example.com'
       sans: '*.testdomain.example.com'
