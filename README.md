@@ -166,3 +166,13 @@ Tested on distributions:
 - Centos 7
 
 Enjoy it!
+
+
+## License
+
+BSD
+
+## Author Information
+
+[Sergey Klyuykov](https://github.com/onegreyonewhite)
+[Konstantin Shumkin](https://github.com/kotofeych)
