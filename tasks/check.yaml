@@ -1,0 +1,55 @@
+---
+- name: Check for completeness of data for dynamic configs (http).
+  assert:
+    fail_msg: "Error. Not all fields are filled in."
+    that:
+      - item.name is defined
+      - item.name | length > 0
+      - item.services_url is defined
+      - item.services_url | length > 0
+      - >-
+        (item.domain is defined and item.domain | length > 0) or
+        (item.raw_domain is defined and item.raw_domain | length > 0)
+      - not (item.domain is defined and item.raw_domain is defined)
+    quiet: true
+  with_items: "{{ traefik_http_dynamic_config }}"
+  when: traefik_http_dynamic_config is defined and traefik_http_dynamic_config
+
+- name: Check for completeness of data for dynamic configs (tcp).
+  assert:
+    fail_msg: "Error. Not all fields are filled in."
+    that:
+      - item.name is defined
+      - item.name | length > 0
+      - item.port is defined
+      - item.port > 0
+      - item.services_address is defined
+      - item.services_address | length > 0
+    quiet: true
+  with_items: "{{ traefik_tcp_dynamic_config }}"
+  when: traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config
+
+- name: Check duplication port in section entryPoints in `traefik.yaml`
+  assert:
+    fail_msg: "Error. Port {{ item.port }} reserved to use."
+    that:
+      - item.port != 80
+      - item.port != 443
+      - item.port != 8080
+    quiet: true
+  with_items: "{{ traefik_tcp_dynamic_config }}"
+  when: traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config
+
+- name: Check for completeness of the entered data for the `tls_resolver`.
+  assert:
+    fail_msg: "Error. Be sure to specify 'main' and 'sans'"
+    that:
+      - item.tls_resolver.main is defined and item.tls_resolver.main|length > 0
+      - item.tls_resolver.sans is defined  and item.tls_resolver.sans|length > 0
+    quiet: true
+  with_items:
+    - "{{ traefik_tcp_dynamic_config }}"
+    - "{{ traefik_http_dynamic_config }}"
+  when: (traefik_http_dynamic_config is defined and traefik_http_dynamic_config
+        or traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config)
+        and item.tls_resolver is defined

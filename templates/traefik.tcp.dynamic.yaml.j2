@@ -1,0 +1,28 @@
+{% if traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config -%}
+---
+tcp:
+  routers:
+    tcp_{{ item.name }}:
+      entryPoints:
+        - "{{ item['name'] }}"
+      service: "{{ item.name }}"
+      rule: "HostSNI(`*`)"
+{% if item.tls is defined or item.tls_resolver is defined %}
+{% if item.tls is defined and item.tls_resolver is undefined %}
+      tls: {{ item.tls | to_nice_yaml(explicit_start=False, explicit_end=False) }}
+{% elif item.tls_resolver is defined and item.tls_resolver %}
+      tls:
+        certResolver: default_le_resolver
+        domains:
+          - main: {{ item.tls_resolver.main }}
+            sans:
+              - '{{ item.tls_resolver.sans }}'
+{%- endif %}
+{%- endif %}
+
+  services:
+    {{ item.name }}:
+      loadBalancer:
+        servers:
+          - address: {{ item.services_address }}
+{%- endif %}

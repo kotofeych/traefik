@@ -1,0 +1,16 @@
+---
+traefik_name_config: "traefik.yaml"
+traefik_systemd_name: "traefik.service"
+traefik_systemd_path: "/etc/systemd/system/"
+
+# TLS Cert default
+traefik_tls_dir: "/etc/traefik/cert/"
+traefik_tls_cert_default:
+  - file: 'default.crt'
+    content: '{{ traefik_tls_cert }}'
+  - file: 'default.pem'
+    content: '{{ traefik_tls_key }}'
+traefik_subdirectory:
+  - name: 'acme'
+  - name: 'dynamic'
+  - name: 'cert'
