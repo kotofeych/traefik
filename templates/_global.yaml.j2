@@ -1,0 +1,14 @@
+---
+http:
+    middlewares:
+        redirect-http-to-https:
+            redirectScheme:
+                scheme: https
+{% if traefik_tls_cert and traefik_tls_key %}
+tls:
+    stores:
+        default:
+            defaultCertificate:
+                certFile: {{ traefik_tls_dir }}default.crt
+                keyFile: {{ traefik_tls_dir }}default.pem
+{% endif %}

@@ -1,0 +1,7 @@
+.tox
+.idea
+*.iml
+out
+gen
+molecule/default/tests/__pycache__/
+molecule/default/pytestdebug.log

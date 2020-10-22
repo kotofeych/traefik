@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: kotofeych
+  description: Role for deploy Traefik on instance.
+  company: "VST Consulting"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.10
+  platforms:
+    - name: rhel
+      versions:
+        - 7
+    - name: ubuntu
+      versions:
+        - 18.04
+  galaxy_tags:
+    - reverseproxy
+    - loadbalancer
+    - traefik
+    - proxy
+    - vst

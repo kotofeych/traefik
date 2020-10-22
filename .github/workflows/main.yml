@@ -1,0 +1,31 @@
+---
+name: Molecule Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+      matrix:
+        ansible-version: [28, 29, 210]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+          docker version
+          docker info
+          python -m pip install --upgrade pip
+          python -m pip install tox
+
+      - name: Test with molecule with Ansible ${{ matrix.ansible-version }}
+        run: |
+          tox -e py37-ansible${{ matrix.ansible-version }}

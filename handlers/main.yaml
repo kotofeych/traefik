@@ -1,0 +1,9 @@
+---
+- name: restart_traefik
+  become: true
+  systemd:
+    name: traefik
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  when: not molecule_test_run

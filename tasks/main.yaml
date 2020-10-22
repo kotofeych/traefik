@@ -1,0 +1,92 @@
+---
+- name: Check files
+  include_tasks: check.yaml
+
+- name: Geting file and its unarchiving
+  become: true
+  unarchive:
+    remote_src: true
+    src: "{{ traefik_url_release }}"
+    dest: "{{ traefik_path_bin }}"
+    mode: 0755
+    creates: "{{ traefik_binary }}"
+
+- name: Rename file `traefik`
+  command:
+    cmd: "mv {{ traefik_path_bin }}/traefik {{ traefik_binary }}"
+    creates: "{{ traefik_binary }}"
+
+- name: Create directories
+  become: true
+  file:
+    path: "/etc/traefik/{{ item.name }}"
+    state: directory
+    mode: 0644
+  with_items:
+    - "{{ traefik_subdirectory }}"
+
+- name: Template - unit systemd
+  become: true
+  template:
+    src: "traefik.service.j2"
+    dest: "/etc/systemd/system/traefik.service"
+    mode: 0644
+  notify:
+    - restart_traefik
+
+- name: Temlate - traefik config
+  template:
+    src: "traefik.yaml.j2"
+    dest: "/etc/traefik/traefik.yaml"
+    mode: 0644
+  notify:
+    - restart_traefik
+
+- name: Temlate - traefik global dynamic config
+  template:
+    src: "_global.yaml.j2"
+    dest: "/etc/traefik/dynamic/_global.yaml"
+    mode: 0644
+  notify:
+    - restart_traefik
+
+- name: Template - traefik typical HTTP dynamic config
+  template:
+    src: "traefik.http.dynamic.yaml.j2"
+    dest: "/etc/traefik/dynamic/{{ item.name }}_http.yaml"
+    mode: 0644
+  when: traefik_http_dynamic_config is defined and traefik_http_dynamic_config
+  with_items:
+    - "{{ traefik_http_dynamic_config }}"
+  notify:
+    - restart_traefik
+
+- name: Template - traefik typical TCP dynamic config
+  template:
+    src: "traefik.tcp.dynamic.yaml.j2"
+    dest: "/etc/traefik/dynamic/{{ item.name }}_tcp.yaml"
+    mode: 0644
+  when: traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config
+  with_items:
+    - "{{ traefik_tcp_dynamic_config }}"
+  notify:
+    - restart_traefik
+
+- name: Copy cert files for https
+  become: true
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ traefik_tls_dir }}{{ item.file }}"
+    mode: 0644
+  with_items: "{{ traefik_tls_cert_default }}"
+  notify:
+    - restart_traefik
+  when: traefik_tls_cert and traefik_tls_key
+
+- name: Remove old versions
+  shell: >-
+    find /usr/bin/traefik_*
+    -not -name "traefik_{{ traefik_distr_ver }}"
+    -exec rm -v {} \;
+  register: result
+  changed_when: 'result.stdout'
