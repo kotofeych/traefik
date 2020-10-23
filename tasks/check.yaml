@@ -53,3 +53,24 @@
   when: (traefik_http_dynamic_config is defined and traefik_http_dynamic_config
         or traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config)
         and item.tls_resolver is defined
+
+- name: Check value variable 'traefik_log_level'.
+  assert:
+    fail_msg: "Error. Required, must be one of the expected values: DEBUG, PANIC, FATAL, ERROR, WARN, and INFO."
+    that:
+      - traefik_log_level is defined and traefik_log_level|length > 0
+      - traefik_log_level == 'DEBUG' or
+        traefik_log_level == 'PANIC' or
+        traefik_log_level == 'FATAL' or
+        traefik_log_level == 'ERROR' or
+        traefik_log_level == 'WARN' or
+        traefik_log_level == 'INFO'
+    quiet: true
+
+- name: Check value variable 'traefik_api_debug'.
+  assert:
+    fail_msg: "Error. Value variable `traefik_api_debug` true or false."
+    that:
+      - traefik_api_debug is defined
+      - traefik_api_debug or not traefik_api_debug
+    quiet: true

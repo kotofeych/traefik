@@ -15,6 +15,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_le_caserver` |  Determines which service issues the certificate. For test runs use - `https://acme-staging-v02.api.letsencrypt.org/directory.`. For production - `https://acme-v02.api.letsencrypt.org/directory`. (Default: `https://acme-v02.api.letsencrypt.org/directory`) |
 | `traefik_le_challenge_type` | Different ACME Challenges. It is possible to use `httpChallenge` and `dnsChallenge`. (Default: `httpChallenge`) |
 | `traefik_le_email` | Required parameter to get the certificate Let’s Encrypt. (Default: `NULL`) |
+| `traefik_log_level` | Default: `WARN` . Alternative logging levels are `DEBUG`, `PANIC`, `FATAL`, `ERROR`, `WARN` and `INFO`. |
 
 ### Inventory variables
 #### HTTP service
@@ -128,6 +129,8 @@ all:
   vars:
     ansible_user: root
     ansible_ssh_private_key_file: '/path/to/.ssh/key'
+    traefik_log_level: 'DEBUG'
+    traefik_api_debug: false
     traefik_http_dynamic_config:
       - name: 'name_config__HTTP__'
         services_url: 'http://172.16.1.10:9000'

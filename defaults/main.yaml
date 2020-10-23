@@ -27,3 +27,8 @@ traefik_le_email: ""
 # TLS default cert
 traefik_tls_cert: ""
 traefik_tls_key: ""
+
+# Traefik static config
+traefik_log_level: 'WARN'
+traefik_api_debug: false
+

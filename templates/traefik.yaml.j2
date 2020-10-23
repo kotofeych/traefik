@@ -39,7 +39,7 @@ certificatesResolvers:
 api:
   dashboard: true
   insecure: true
-  debug: true
+  debug: {{ traefik_api_debug | bool | lower}}
 
 log:
-  level: DEBUG
+  level: {{ traefik_log_level }}
