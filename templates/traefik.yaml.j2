@@ -6,6 +6,10 @@ entryPoints:
     address: ":443"
   traefik:
     address: ":8080"
+{% if traefik_enable_prometheus %}
+  metrics:
+    address: ":8082"
+{% endif %}
 {% if traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config -%}
 {% for EntryPoint in traefik_tcp_dynamic_config %}
 {%- if EntryPoint['port'] is defined and EntryPoint['port'] %}
@@ -34,6 +38,19 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: http
 {%- endif %}
+{% endif %}
+
+{% if traefik_enable_prometheus -%}
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addServicesLabels: true
+    addEntryPointsLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
 {% endif %}
 
 api:

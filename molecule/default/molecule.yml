@@ -16,8 +16,8 @@ lint: |
 platforms:
   - name: Ubuntu-18.04
     image: vstconsulting/images:ubuntu
-  - name: Centos-7
-    image: vstconsulting/images:centos7
+#  - name: Centos-7
+#    image: vstconsulting/images:centos7
 provisioner:
   name: ansible
   log: true
