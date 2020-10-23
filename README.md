@@ -16,6 +16,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_le_challenge_type` | Different ACME Challenges. It is possible to use `httpChallenge` and `dnsChallenge`. (Default: `httpChallenge`) |
 | `traefik_le_email` | Required parameter to get the certificate Let’s Encrypt. (Default: `NULL`) |
 | `traefik_log_level` | Default: `WARN` . Alternative logging levels are `DEBUG`, `PANIC`, `FATAL`, `ERROR`, `WARN` and `INFO`. |
+| `traefik_enable_prometheus` | Default: `true` . Enables prometheus metrics endpoint. |
 
 ### Inventory variables
 #### HTTP service
