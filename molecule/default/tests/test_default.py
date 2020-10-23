@@ -46,6 +46,8 @@ entryPoints:
     address: ":443"
   traefik:
     address: ":8080"
+  metrics:
+    address: ":8082"
   test_1:
     address: ":8090"
 
@@ -62,6 +64,17 @@ certificatesResolvers:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:
         provider: route53
+
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addServicesLabels: true
+    addEntryPointsLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
 
 api:
   dashboard: true
