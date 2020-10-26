@@ -5,10 +5,10 @@ entryPoints:
   https:
     address: ":443"
   traefik:
-    address: ":8080"
+    address: ":{{ traefik_dashboard_port }}"
 {% if traefik_enable_prometheus %}
   metrics:
-    address: ":8082"
+    address: ":{{ traefik_metrics_port }}"
 {% endif %}
 {% if traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config -%}
 {% for EntryPoint in traefik_tcp_dynamic_config %}
