@@ -167,6 +167,7 @@ http:
           - main: testdomain.example.com
             sans:
               - '*.testdomain.example.com'
+
   services:
     test_1:
       loadBalancer:
@@ -238,8 +239,33 @@ http:
           - main: testdomain2.example.com
             sans:
               - '*.testdomain2.example.com'
+
   services:
     test_4:
+      loadBalancer:
+        servers:
+          - url: http://172.16.1.10:9000
+'''
+test_5_http = '''
+---
+http:
+  routers:
+    http_test_5:
+      rule: 'HostRegexp(`testdomain3.example.com`)'
+      entrypoints:
+        - http
+      service: test_5
+      middlewares:
+      - redirect-http-to-https
+    https_test_5:
+      rule: 'HostRegexp(`testdomain3.example.com`)'
+      entrypoints:
+        - https
+      service: test_5
+      tls:
+        certResolver: default_le_resolver
+  services:
+    test_5:
       loadBalancer:
         servers:
           - url: http://172.16.1.10:9000
@@ -271,6 +297,7 @@ check_files = {
     '/etc/traefik/dynamic/test_2_http.yaml': test_2_http,
     '/etc/traefik/dynamic/test_3_http.yaml': test_3_http,
     '/etc/traefik/dynamic/test_4_http.yaml': test_4_http,
+    '/etc/traefik/dynamic/test_5_http.yaml': test_5_http,
     '/etc/traefik/dynamic/test_1_tcp.yaml': test_1_tcp
 }
 

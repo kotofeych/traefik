@@ -10,7 +10,7 @@ http:
       entrypoints:
         - http
       service: {{ item.name }}
-{% if item.tls is defined or item.tls_resolver is defined %}
+{% if item.tls is defined or item.tls_resolver is defined or item.tls_simple_acme is defined %}
       middlewares:
       - redirect-http-to-https
     https_{{ item.name }}:
@@ -31,6 +31,9 @@ http:
           - main: {{ item.tls_resolver.main }}
             sans:
               - '{{ item.tls_resolver.sans }}'
+{% elif item.tls_simple_acme is defined and item.tls_simple_acme %}
+      tls:
+        certResolver: default_le_resolver
 {%- endif %}
 {%- endif %}
 
