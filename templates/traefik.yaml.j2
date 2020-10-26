@@ -23,6 +23,12 @@ providers:
   file:
     directory: /etc/traefik/dynamic/
     watch: false
+{% for provider, config in traefik_providers.items() -%}
+{% if config is mapping %}
+  {{ provider }}:
+    {{ config | to_nice_yaml | indent(4) }}
+{%- endif %}
+{%- endfor %}
 
 {% if traefik_le_email -%}
 certificatesResolvers:

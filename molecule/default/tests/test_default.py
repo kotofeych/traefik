@@ -55,6 +55,11 @@ providers:
   file:
     directory: /etc/traefik/dynamic/
     watch: false
+  docker:
+    defaultRule: Host(`{{ .Name }}.example.com`)
+    endpoint: tcp://1.1.1.1:2376
+    exposedByDefault: false
+    useBindPortIP: false
 
 certificatesResolvers:
   default_le_resolver:
