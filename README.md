@@ -19,7 +19,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_enable_prometheus` | Default: `true` . Enables prometheus metrics endpoint. |
 | `traefik_providers` | Default: `{}` . Setup other providers support. Key is provider name, value - provider settings. |
 | `traefik_dashboard_port` | Default: `8080` . Insecure dashboard port. |
-| `traefik_metrics_port` | Default: `8080` . Insecure metrics port. |
+| `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
 
 ### Inventory variables
 #### HTTP service
