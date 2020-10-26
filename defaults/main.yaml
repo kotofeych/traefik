@@ -32,4 +32,8 @@ traefik_tls_key: ""
 traefik_log_level: 'WARN'
 traefik_api_debug: false
 
+# Traefik prometheus support
 traefik_enable_prometheus: true
+
+# Enabling custom providers
+traefik_providers: {}

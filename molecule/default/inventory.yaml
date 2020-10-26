@@ -4,6 +4,12 @@ all:
     molecule_test_run: true
     traefik_log_level: 'DEBUG'
     traefik_api_debug: true
+    traefik_providers:
+      docker:
+        endpoint: "tcp://1.1.1.1:2376"
+        exposedByDefault: false
+        defaultRule: "Host(`{{'{{'}} .Name }}.example.com`)"
+        useBindPortIP: false
     traefik_http_dynamic_config:
       - name: 'test_1'
         services_url: 'http://172.16.1.10:9000'
