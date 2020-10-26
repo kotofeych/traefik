@@ -65,6 +65,12 @@ traefik_http_dynamic_config:
     services_url: 'http://172.16.1.10:9000'
     domain: 'testdomain2.example.com'
     tls: {}
+  # https with Let`s Encrypt auto domain cert + traefik ruled Host
+  - name: 'name_config__HTTPS__3'
+    services_url: 'http://172.16.1.10:9000'
+    raw_domain: >-
+      'Host(`testdomain3.example.com`, `testdomain4.example.com`)'
+    tls_simple_acme: true
 ```
 
 #### TCP service

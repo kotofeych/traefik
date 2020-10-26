@@ -34,6 +34,11 @@ all:
         tls_resolver:
           main: 'testdomain2.example.com'
           sans: '*.testdomain2.example.com'
+      - name: 'test_5'
+        services_url: 'http://172.16.1.10:9000'
+        raw_domain: >-
+          'HostRegexp(`testdomain3.example.com`)'
+        tls_simple_acme: true
     traefik_tcp_dynamic_config:
       - name: 'test_1'
         port: 8090
