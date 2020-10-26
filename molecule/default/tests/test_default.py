@@ -45,9 +45,9 @@ entryPoints:
   https:
     address: ":443"
   traefik:
-    address: ":8080"
+    address: ":8083"
   metrics:
-    address: ":8082"
+    address: ":8081"
   test_1:
     address: ":8090"
 
