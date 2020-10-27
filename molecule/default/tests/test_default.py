@@ -30,6 +30,12 @@ http:
         redirect-http-to-https:
             redirectScheme:
                 scheme: https
+        proxy-proto-headers:
+            headers:
+                customRequestHeaders:
+                    X-Forwarded-Protocol: "https"
+                    X-Forwarded-Proto: "https"
+
 tls:
     stores:
         default:
@@ -161,6 +167,8 @@ http:
       entrypoints:
         - https
       service: test_1
+      middlewares:
+      - proxy-proto-headers
       tls:
         certResolver: default_le_resolver
         domains:
@@ -190,7 +198,10 @@ http:
       entrypoints:
         - https
       service: test_2
-      tls: {}
+      middlewares:
+      - proxy-proto-headers
+      tls:
+        {}
 
 
   services:
@@ -233,6 +244,8 @@ http:
       entrypoints:
         - https
       service: test_4
+      middlewares:
+      - proxy-proto-headers
       tls:
         certResolver: default_le_resolver
         domains:
@@ -262,6 +275,8 @@ http:
       entrypoints:
         - https
       service: test_5
+      middlewares:
+      - proxy-proto-headers
       tls:
         certResolver: default_le_resolver
   services:

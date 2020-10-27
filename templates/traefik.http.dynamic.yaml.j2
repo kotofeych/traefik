@@ -22,8 +22,11 @@ http:
       entrypoints:
         - https
       service: {{ item.name }}
+      middlewares:
+      - proxy-proto-headers
 {% if item.tls is defined and item.tls_resolver is undefined %}
-      tls: {{ item.tls | to_nice_yaml(explicit_start=False, explicit_end=False) }}
+      tls:
+        {{ item.tls | to_nice_yaml | indent(8) }}
 {% elif item.tls_resolver is defined and item.tls_resolver %}
       tls:
         certResolver: default_le_resolver
@@ -40,5 +43,8 @@ http:
   services:
     {{ item.name }}:
       loadBalancer:
+{% if item.loadBalancerAdditional is defined %}
+        {{ item.loadBalancerAdditional | to_nice_yaml | indent(8) }}
+{%- endif %}
         servers:
           - url: {{ item.services_url }}
