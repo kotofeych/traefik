@@ -1,4 +1,6 @@
 .tox
+.venv
+.env
 .idea
 *.iml
 out
