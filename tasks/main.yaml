@@ -1,5 +1,6 @@
 ---
 - name: Check files
+  become: true
   include_tasks: check.yaml
 
 - name: Geting file and its unarchiving
@@ -12,6 +13,7 @@
     creates: "{{ traefik_binary }}"
 
 - name: Rename file `traefik`
+  become: true
   command:
     cmd: "mv {{ traefik_path_bin }}/traefik {{ traefik_binary }}"
     creates: "{{ traefik_binary }}"
@@ -35,6 +37,7 @@
     - restart_traefik
 
 - name: Temlate - traefik config
+  become: true
   template:
     src: "traefik.yaml.j2"
     dest: "/etc/traefik/traefik.yaml"
@@ -43,6 +46,7 @@
     - restart_traefik
 
 - name: Temlate - traefik global dynamic config
+  become: true
   template:
     src: "_global.yaml.j2"
     dest: "/etc/traefik/dynamic/_global.yaml"
@@ -51,6 +55,7 @@
     - restart_traefik
 
 - name: Template - traefik typical HTTP dynamic config
+  become: true
   template:
     src: "traefik.http.dynamic.yaml.j2"
     dest: "/etc/traefik/dynamic/{{ item.name }}_http.yaml"
@@ -62,6 +67,7 @@
     - restart_traefik
 
 - name: Template - traefik typical TCP dynamic config
+  become: true
   template:
     src: "traefik.tcp.dynamic.yaml.j2"
     dest: "/etc/traefik/dynamic/{{ item.name }}_tcp.yaml"
@@ -84,6 +90,7 @@
   when: traefik_tls_cert and traefik_tls_key
 
 - name: Remove old versions
+  become: true
   shell: >-
     find /usr/bin/traefik_*
     -not -name "traefik_{{ traefik_distr_ver }}"

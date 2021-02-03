@@ -8,7 +8,7 @@ traefik_service_content = '''
 [Unit]
 Description=Traefik
 Documentation=https://docs.traefik.io
-AssertFileIsExecutable=/usr/bin/traefik_v2.3.2
+AssertFileIsExecutable=/usr/bin/traefik_v2.4.2
 AssertPathExists=/etc/traefik/traefik.yaml
 
 [Service]
@@ -16,7 +16,7 @@ Environment="AWS_PROFILE=default"
 Environment="AWS_ACCESS_KEY_ID=token_access"
 Environment="AWS_SECRET_ACCESS_KEY=token_secret"
 Type=notify
-ExecStart=/usr/bin/traefik_v2.3.2
+ExecStart=/usr/bin/traefik_v2.4.2
 Restart=always
 WatchdogSec=1s
 
