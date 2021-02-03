@@ -1,3 +1,2 @@
 ignore: |
   .tox
-  .env
