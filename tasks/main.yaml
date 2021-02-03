@@ -1,6 +1,5 @@
 ---
 - name: Check files
-  become: true
   include_tasks: check.yaml
 
 - name: Geting file and its unarchiving
