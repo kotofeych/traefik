@@ -4,6 +4,14 @@ all:
     molecule_test_run: true
     traefik_log_level: 'DEBUG'
     traefik_api_debug: true
+    traefik_metrics_port: 8081
+    traefik_dashboard_port: 8083
+    traefik_providers:
+      docker:
+        endpoint: "tcp://1.1.1.1:2376"
+        exposedByDefault: false
+        defaultRule: "Host(`{{'{{'}} .Name }}.example.com`)"
+        useBindPortIP: false
     traefik_http_dynamic_config:
       - name: 'test_1'
         services_url: 'http://172.16.1.10:9000'
@@ -26,6 +34,11 @@ all:
         tls_resolver:
           main: 'testdomain2.example.com'
           sans: '*.testdomain2.example.com'
+      - name: 'test_5'
+        services_url: 'http://172.16.1.10:9000'
+        raw_domain: >-
+          'HostRegexp(`testdomain3.example.com`)'
+        tls_simple_acme: true
     traefik_tcp_dynamic_config:
       - name: 'test_1'
         port: 8090

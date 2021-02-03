@@ -4,6 +4,12 @@ http:
         redirect-http-to-https:
             redirectScheme:
                 scheme: https
+        proxy-proto-headers:
+            headers:
+                customRequestHeaders:
+                    X-Forwarded-Protocol: "https"
+                    X-Forwarded-Proto: "https"
+
 {% if traefik_tls_cert and traefik_tls_key %}
 tls:
     stores:

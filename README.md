@@ -16,6 +16,10 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_le_challenge_type` | Different ACME Challenges. It is possible to use `httpChallenge` and `dnsChallenge`. (Default: `httpChallenge`) |
 | `traefik_le_email` | Required parameter to get the certificate Let’s Encrypt. (Default: `NULL`) |
 | `traefik_log_level` | Default: `WARN` . Alternative logging levels are `DEBUG`, `PANIC`, `FATAL`, `ERROR`, `WARN` and `INFO`. |
+| `traefik_enable_prometheus` | Default: `true` . Enables prometheus metrics endpoint. |
+| `traefik_providers` | Default: `{}` . Setup other providers support. Key is provider name, value - provider settings. |
+| `traefik_dashboard_port` | Default: `8080` . Insecure dashboard port. |
+| `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
 
 ### Inventory variables
 #### HTTP service
@@ -61,6 +65,12 @@ traefik_http_dynamic_config:
     services_url: 'http://172.16.1.10:9000'
     domain: 'testdomain2.example.com'
     tls: {}
+  # https with Let`s Encrypt auto domain cert + traefik ruled Host
+  - name: 'name_config__HTTPS__3'
+    services_url: 'http://172.16.1.10:9000'
+    raw_domain: >-
+      'Host(`testdomain3.example.com`, `testdomain4.example.com`)'
+    tls_simple_acme: true
 ```
 
 #### TCP service

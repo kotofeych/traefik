@@ -27,3 +27,5 @@ provisioner:
     - --inventory=inventory.yaml
 verifier:
   name: testinfra
+  options:
+    vv: true

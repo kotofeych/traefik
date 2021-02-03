@@ -5,7 +5,11 @@ entryPoints:
   https:
     address: ":443"
   traefik:
-    address: ":8080"
+    address: ":{{ traefik_dashboard_port }}"
+{% if traefik_enable_prometheus %}
+  metrics:
+    address: ":{{ traefik_metrics_port }}"
+{% endif %}
 {% if traefik_tcp_dynamic_config is defined and traefik_tcp_dynamic_config -%}
 {% for EntryPoint in traefik_tcp_dynamic_config %}
 {%- if EntryPoint['port'] is defined and EntryPoint['port'] %}
@@ -19,6 +23,12 @@ providers:
   file:
     directory: /etc/traefik/dynamic/
     watch: false
+{% for provider, config in traefik_providers.items() -%}
+{% if config is mapping %}
+  {{ provider }}:
+    {{ config | to_nice_yaml | indent(4) }}
+{%- endif %}
+{%- endfor %}
 
 {% if traefik_le_email -%}
 certificatesResolvers:
@@ -34,6 +44,19 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: http
 {%- endif %}
+{% endif %}
+
+{% if traefik_enable_prometheus -%}
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addServicesLabels: true
+    addEntryPointsLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
 {% endif %}
 
 api:
