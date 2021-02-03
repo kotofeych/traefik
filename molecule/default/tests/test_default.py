@@ -265,7 +265,7 @@ def test_check_distribution(host):
 
 
 def test_check_file_traefik(host):
-    assert host.file("/usr/bin/traefik_v2.3.2").exists
+    assert host.file("/usr/bin/traefik_v2.4.2").exists
 
     for file_path, content in check_files.items():
         file_obj = host.file(file_path)
