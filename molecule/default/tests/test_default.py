@@ -30,6 +30,12 @@ http:
         redirect-http-to-https:
             redirectScheme:
                 scheme: https
+        proxy-proto-headers:
+            headers:
+                customRequestHeaders:
+                    X-Forwarded-Protocol: "https"
+                    X-Forwarded-Proto: "https"
+
 tls:
     stores:
         default:
@@ -45,7 +51,9 @@ entryPoints:
   https:
     address: ":443"
   traefik:
-    address: ":8080"
+    address: ":8083"
+  metrics:
+    address: ":8081"
   test_1:
     address: ":8090"
 
@@ -53,6 +61,11 @@ providers:
   file:
     directory: /etc/traefik/dynamic/
     watch: false
+  docker:
+    defaultRule: Host(`{{ .Name }}.example.com`)
+    endpoint: tcp://1.1.1.1:2376
+    exposedByDefault: false
+    useBindPortIP: false
 
 certificatesResolvers:
   default_le_resolver:
@@ -62,6 +75,17 @@ certificatesResolvers:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:
         provider: route53
+
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addServicesLabels: true
+    addEntryPointsLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
 
 api:
   dashboard: true
@@ -143,12 +167,15 @@ http:
       entrypoints:
         - https
       service: test_1
+      middlewares:
+      - proxy-proto-headers
       tls:
         certResolver: default_le_resolver
         domains:
           - main: testdomain.example.com
             sans:
               - '*.testdomain.example.com'
+
   services:
     test_1:
       loadBalancer:
@@ -171,7 +198,10 @@ http:
       entrypoints:
         - https
       service: test_2
-      tls: {}
+      middlewares:
+      - proxy-proto-headers
+      tls:
+        {}
 
 
   services:
@@ -214,14 +244,43 @@ http:
       entrypoints:
         - https
       service: test_4
+      middlewares:
+      - proxy-proto-headers
       tls:
         certResolver: default_le_resolver
         domains:
           - main: testdomain2.example.com
             sans:
               - '*.testdomain2.example.com'
+
   services:
     test_4:
+      loadBalancer:
+        servers:
+          - url: http://172.16.1.10:9000
+'''
+test_5_http = '''
+---
+http:
+  routers:
+    http_test_5:
+      rule: 'HostRegexp(`testdomain3.example.com`)'
+      entrypoints:
+        - http
+      service: test_5
+      middlewares:
+      - redirect-http-to-https
+    https_test_5:
+      rule: 'HostRegexp(`testdomain3.example.com`)'
+      entrypoints:
+        - https
+      service: test_5
+      middlewares:
+      - proxy-proto-headers
+      tls:
+        certResolver: default_le_resolver
+  services:
+    test_5:
       loadBalancer:
         servers:
           - url: http://172.16.1.10:9000
@@ -253,6 +312,7 @@ check_files = {
     '/etc/traefik/dynamic/test_2_http.yaml': test_2_http,
     '/etc/traefik/dynamic/test_3_http.yaml': test_3_http,
     '/etc/traefik/dynamic/test_4_http.yaml': test_4_http,
+    '/etc/traefik/dynamic/test_5_http.yaml': test_5_http,
     '/etc/traefik/dynamic/test_1_tcp.yaml': test_1_tcp
 }
 

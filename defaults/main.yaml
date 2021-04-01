@@ -19,6 +19,9 @@ molecule_test_run: false
 traefik_path_bin: "/usr/bin"
 traefik_binary: "{{ traefik_path_bin }}/traefik_{{ traefik_distr_ver }}"
 
+# Dashboard port
+traefik_dashboard_port: 8080
+
 # LE
 traefik_le_caserver: "https://acme-v02.api.letsencrypt.org/directory"
 traefik_le_challenge_type: "httpChallenge"
@@ -31,3 +34,10 @@ traefik_tls_key: ""
 # Traefik static config
 traefik_log_level: 'WARN'
 traefik_api_debug: false
+
+# Traefik prometheus support
+traefik_enable_prometheus: true
+traefik_metrics_port: 8082
+
+# Enabling custom providers
+traefik_providers: {}
