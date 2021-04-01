@@ -1,6 +1,7 @@
 .tox
 .venv
 .env
+env
 .idea
 *.iml
 out

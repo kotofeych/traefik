@@ -1,2 +1,4 @@
 exclude_paths:
   - .tox/
+  - .env
+  - env
