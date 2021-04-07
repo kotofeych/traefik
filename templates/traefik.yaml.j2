@@ -21,7 +21,7 @@ entryPoints:
 
 providers:
   file:
-    directory: /etc/traefik/dynamic/
+    directory: /etc/traefik/config/
     watch: false
 {% for provider, config in traefik_providers.items() -%}
 {% if config is mapping %}

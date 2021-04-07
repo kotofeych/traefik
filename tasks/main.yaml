@@ -33,7 +33,6 @@
   changed_when: False
   when: result_checking_traefik_bin_file_for_install.matched == 1
 
-- name: Working with teamplate config files for traefik
 - name: Create directories
   become: true
   file:

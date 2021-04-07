@@ -11,7 +11,7 @@ driver:
 lint: |
   set -e
   yamllint .
-  flake8
+  flake8 molecule/
   ansible-lint
 platforms:
   - name: Ubuntu-18.04
