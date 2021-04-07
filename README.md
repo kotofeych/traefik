@@ -6,12 +6,12 @@ This ansible role intended for setting on the host Traefik.
 ### Defaults variables
 | **Inventory**               | **Description**             |
 | --------------------------- | --------------------------- |
-| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.4.7`) |
+| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.4.8`) |
 | `traefik_distr_os` | Operating system. (Default: `linux`) |
 | `traefik_distr_arch` | OS architecture. (Default: `amd64`) |
-| `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.4.7/traefik_v2.4.7_linux_amd64.tar.gz`) |
+| `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.4.8/traefik_v2.4.8_linux_amd64.tar.gz`) |
 | `traefik_path_bin` | Traefik bin location path. (Default: `/usr/bin`) |
-| `traefik_binary` | Full path of Traefik on the system. (Default: `/usr/bin/traefik_v2.4.7`) |
+| `traefik_binary` | Full path of Traefik on the system. (Default: `/usr/bin/traefik_v2.4.8`) |
 | `traefik_le_caserver` |  Determines which service issues the certificate. For test runs use - `https://acme-staging-v02.api.letsencrypt.org/directory.`. For production - `https://acme-v02.api.letsencrypt.org/directory`. (Default: `https://acme-v02.api.letsencrypt.org/directory`) |
 | `traefik_le_challenge_type` | Different ACME Challenges. It is possible to use `httpChallenge` and `dnsChallenge`. (Default: `httpChallenge`) |
 | `traefik_le_email` | Required parameter to get the certificate Let’s Encrypt. (Default: `NULL`) |
@@ -71,6 +71,21 @@ traefik_http_dynamic_config:
     raw_domain: >-
       'Host(`testdomain3.example.com`, `testdomain4.example.com`)'
     tls_simple_acme: true
+```
+
+#### HTTP and HTTPS service
+The `traefik_http_and_https_config` variable describes the configuration of services operating over the `http` and `https protocol`.
+
+The parameter is used in cases when you need to have access to one service using different protocols: `http` and `https`.
+
+The `traefik_http_and_https_config` works with similar parameters `traefik_http_dynamic_config`.
+
+```yaml
+# Example:
+traefik_http_and_https_config:
+  - name: 'test_1'
+    services_url: 'http://127.0.0.1:8080/'
+    domain: 'test1.local'
 ```
 
 #### TCP service
@@ -170,6 +185,15 @@ all:
       -----BEGIN RSA PRIVATE KEY-----
       -----END RSA PRIVATE KEY-----
 ```
+
+# Info about configuration files
+This is role worked with two type configuration files: `dynamic` and `custom`.
+
+`Dynamic config files` - These files rewrite in process deployment project every time. 
+Files located: `/etc/traefik/config/dynamic/`
+
+`Custom config files` - Configuration files that are managed individually.
+Files located: `/etc/traefik/config/custom/`
 
 # Supported OS
 Any OS that has a `systemd` service.

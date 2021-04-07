@@ -8,7 +8,7 @@ traefik_service_content = '''
 [Unit]
 Description=Traefik
 Documentation=https://docs.traefik.io
-AssertFileIsExecutable=/usr/bin/traefik_v2.4.7
+AssertFileIsExecutable=/usr/bin/traefik_v2.4.8
 AssertPathExists=/etc/traefik/traefik.yaml
 
 [Service]
@@ -16,7 +16,7 @@ Environment="AWS_PROFILE=default"
 Environment="AWS_ACCESS_KEY_ID=token_access"
 Environment="AWS_SECRET_ACCESS_KEY=token_secret"
 Type=notify
-ExecStart=/usr/bin/traefik_v2.4.7
+ExecStart=/usr/bin/traefik_v2.4.8
 Restart=always
 WatchdogSec=1s
 
@@ -59,7 +59,7 @@ entryPoints:
 
 providers:
   file:
-    directory: /etc/traefik/dynamic/
+    directory: /etc/traefik/config/
     watch: false
   docker:
     defaultRule: Host(`{{ .Name }}.example.com`)
@@ -285,6 +285,28 @@ http:
         servers:
           - url: http://172.16.1.10:9000
 '''
+test_1_http_and_https = '''
+---
+http:
+  routers:
+    https_test_1:
+      rule: Host(`test1.local`)
+      entrypoints:
+        - https
+      service: test_1_http
+      tls: {}
+    http_test_1:
+      rule: Host(`test1.local`)
+      entrypoints:
+        - http
+      service: test_1_http
+
+  services:
+    test_1_http:
+      loadBalancer:
+        servers:
+          - url: http://127.0.0.1:8080/
+'''
 test_1_tcp = '''
 ---
 tcp:
@@ -307,13 +329,14 @@ check_files = {
     '/etc/traefik/cert/default.crt': default_crt,
     '/etc/traefik/cert/default.pem': default_pem,
     '/etc/traefik/traefik.yaml': traefik_yaml_content,
-    '/etc/traefik/dynamic/_global.yaml': global_yaml_content,
-    '/etc/traefik/dynamic/test_1_http.yaml': test_1_http,
-    '/etc/traefik/dynamic/test_2_http.yaml': test_2_http,
-    '/etc/traefik/dynamic/test_3_http.yaml': test_3_http,
-    '/etc/traefik/dynamic/test_4_http.yaml': test_4_http,
-    '/etc/traefik/dynamic/test_5_http.yaml': test_5_http,
-    '/etc/traefik/dynamic/test_1_tcp.yaml': test_1_tcp
+    '/etc/traefik/config/dynamic/_global.yaml': global_yaml_content,
+    '/etc/traefik/config/dynamic/test_1_http.yaml': test_1_http,
+    '/etc/traefik/config/dynamic/test_2_http.yaml': test_2_http,
+    '/etc/traefik/config/dynamic/test_3_http.yaml': test_3_http,
+    '/etc/traefik/config/dynamic/test_4_http.yaml': test_4_http,
+    '/etc/traefik/config/dynamic/test_5_http.yaml': test_5_http,
+    '/etc/traefik/config/dynamic/test_1_http_and_https.yaml': test_1_http_and_https,
+    '/etc/traefik/config/dynamic/test_1_tcp.yaml': test_1_tcp
 }
 
 
@@ -325,7 +348,7 @@ def test_check_distribution(host):
 
 
 def test_check_file_traefik(host):
-    assert host.file("/usr/bin/traefik_v2.4.7").exists
+    assert host.file("/usr/bin/traefik_v2.4.8").exists
 
     for file_path, content in check_files.items():
         file_obj = host.file(file_path)

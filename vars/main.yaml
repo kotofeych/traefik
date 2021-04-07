@@ -12,5 +12,6 @@ traefik_tls_cert_default:
     content: '{{ traefik_tls_key }}'
 traefik_subdirectory:
   - name: 'acme'
-  - name: 'dynamic'
   - name: 'cert'
+  - name: 'config/dynamic'
+  - name: 'config/custom'

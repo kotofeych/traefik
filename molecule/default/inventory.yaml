@@ -39,6 +39,10 @@ all:
         raw_domain: >-
           'HostRegexp(`testdomain3.example.com`)'
         tls_simple_acme: true
+    traefik_http_and_https_config:
+      - name: 'test_1'
+        services_url: 'http://127.0.0.1:8080/'
+        domain: 'test1.local'
     traefik_tcp_dynamic_config:
       - name: 'test_1'
         port: 8090

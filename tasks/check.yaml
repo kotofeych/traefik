@@ -15,6 +15,22 @@
   with_items: "{{ traefik_http_dynamic_config }}"
   when: traefik_http_dynamic_config is defined and traefik_http_dynamic_config
 
+- name: Check for completeness of data for dynamic configs (http and https).
+  assert:
+    fail_msg: "Error. Not all fields are filled in."
+    that:
+      - item.name is defined
+      - item.name | length > 0
+      - item.services_url is defined
+      - item.services_url | length > 0
+      - >-
+        (item.domain is defined and item.domain | length > 0) or
+        (item.raw_domain is defined and item.raw_domain | length > 0)
+      - not (item.domain is defined and item.raw_domain is defined)
+    quiet: true
+  with_items: "{{ traefik_http_and_https_config }}"
+  when: traefik_http_and_https_config is defined and traefik_http_and_https_config
+
 - name: Check for completeness of data for dynamic configs (tcp).
   assert:
     fail_msg: "Error. Not all fields are filled in."
@@ -74,3 +90,27 @@
       - traefik_api_debug is defined
       - traefik_api_debug or not traefik_api_debug
     quiet: true
+
+- name: Find installation traces traefik.
+  block:
+    - name: Check config file - "traefik.yaml".
+      stat:
+        path: "/etc/traefik/traefik.yaml"
+      register: result_check_config_file_traefik
+
+    - name: Check config file - "_global.yaml".
+      stat:
+        path: "/etc/traefik/config/dynamic/_global.yaml"
+      register: result_check_config_file_global
+
+    - name: Check all traefik bin file.
+      find:
+        paths: "{{ traefik_path_bin }}"
+        patterns: "traefik_*"
+      register: result_checking_traefik_bin_all_file
+
+    - name: Check specific traefik versional bin file.
+      find:
+        paths: "{{ traefik_path_bin }}"
+        patterns: "traefik_{{ traefik_distr_ver }}"
+      register: result_checking_traefik_bin_file_for_install

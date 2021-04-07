@@ -1,4 +1,6 @@
 exclude_paths:
   - .tox/
-  - .env
-  - env
+  - env/
+  - .env/
+skip_list:
+  - '106'
