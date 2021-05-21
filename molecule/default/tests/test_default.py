@@ -285,7 +285,7 @@ http:
         servers:
           - url: http://172.16.1.10:9000
 '''
-test_1_http_and_https = '''
+test_1_http_s = '''
 ---
 http:
   routers:
@@ -335,7 +335,7 @@ check_files = {
     '/etc/traefik/config/dynamic/test_3_http.yaml': test_3_http,
     '/etc/traefik/config/dynamic/test_4_http.yaml': test_4_http,
     '/etc/traefik/config/dynamic/test_5_http.yaml': test_5_http,
-    '/etc/traefik/config/dynamic/test_1_http_and_https.yaml': test_1_http_and_https,
+    '/etc/traefik/config/dynamic/test_1_http_s.yaml': test_1_http_s,
     '/etc/traefik/config/dynamic/test_1_tcp.yaml': test_1_tcp
 }
 

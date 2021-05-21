@@ -1,4 +1,7 @@
 ---
-- hosts: all
-  roles:
-    - role: traefik
+- name: Start playbook
+  hosts: all
+  tasks:
+    - name: Include role `traefik`
+      include_role:
+        name: traefik

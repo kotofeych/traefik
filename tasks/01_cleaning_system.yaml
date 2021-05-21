@@ -1,0 +1,10 @@
+---
+- name: Cleaning directories with config files
+  become: true
+  file:
+    path: "/etc/traefik/{{ item }}"
+    state: absent
+  with_items:
+    - "config/dynamic/"
+    - "cert/"
+  register: remove_dir

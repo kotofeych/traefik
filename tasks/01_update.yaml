@@ -1,0 +1,15 @@
+---
+- name: Geting file and its unarchiving
+  become: true
+  unarchive:
+    remote_src: true
+    src: "{{ traefik_url_release }}"
+    dest: "{{ traefik_path_bin }}"
+    mode: 0755
+    creates: "{{ traefik_binary }}"
+
+- name: Rename file `traefik`
+  become: true
+  command:
+    cmd: "mv {{ traefik_path_bin }}/traefik {{ traefik_binary }}"
+    creates: "{{ traefik_binary }}"

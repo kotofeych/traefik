@@ -6,4 +6,5 @@
     state: restarted
     enabled: true
     daemon_reload: true
-  when: not molecule_test_run
+  when: molecule_test_run is undefined or
+        molecule_test_run
