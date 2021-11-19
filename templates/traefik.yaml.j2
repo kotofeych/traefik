@@ -2,8 +2,14 @@
 entryPoints:
   http:
     address: ":80"
+{% if traefik_forwardedheaders %}
+    {{ traefik_forwardedheaders | to_nice_yaml | indent(4) }}
+{%- endif %}
   https:
     address: ":443"
+{% if traefik_forwardedheaders %}
+    {{ traefik_forwardedheaders | to_nice_yaml | indent(4) }}
+{%- endif %}
   traefik:
     address: ":{{ traefik_dashboard_port }}"
 {% if traefik_enable_prometheus %}

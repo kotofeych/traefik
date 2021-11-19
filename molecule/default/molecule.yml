@@ -10,9 +10,9 @@ driver:
   name: docker
 lint: |
   set -e
-  yamllint . -c ./molecule/.yamllint.yaml
-  flake8 ./molecule/
-  ansible-lint -c ./molecule/.ansible-lint
+  yamllint .
+  flake8 molecule/
+  ansible-lint
 platforms:
   - name: Ubuntu-18.04
     image: vstconsulting/images:ubuntu
@@ -24,8 +24,7 @@ provisioner:
   options:
     vvv: true
   ansible_args:
-    - -e '{"molecule_test_run":"true"}'
-    - --inventory=molecule/default/inventory.yaml
+    - --inventory=inventory.yaml
 verifier:
   name: testinfra
   options:

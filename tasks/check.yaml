@@ -114,5 +114,3 @@
         paths: "{{ traefik_path_bin }}"
         patterns: "traefik_{{ traefik_distr_ver }}"
       register: result_checking_traefik_bin_file_for_install
-
-#- name: Check dynamic config

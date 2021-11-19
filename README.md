@@ -6,12 +6,12 @@ This ansible role intended for setting on the host Traefik.
 ### Defaults variables
 | **Inventory**               | **Description**             |
 | --------------------------- | --------------------------- |
-| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.4.8`) |
+| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.5.4`) |
 | `traefik_distr_os` | Operating system. (Default: `linux`) |
 | `traefik_distr_arch` | OS architecture. (Default: `amd64`) |
-| `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.4.8/traefik_v2.4.8_linux_amd64.tar.gz`) |
+| `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.5.4/traefik_v2.5.4_linux_amd64.tar.gz`) |
 | `traefik_path_bin` | Traefik bin location path. (Default: `/usr/bin`) |
-| `traefik_binary` | Full path of Traefik on the system. (Default: `/usr/bin/traefik_v2.4.8`) |
+| `traefik_binary` | Full path of Traefik on the system. (Default: `/usr/bin/traefik_v2.5.4`) |
 | `traefik_le_caserver` |  Determines which service issues the certificate. For test runs use - `https://acme-staging-v02.api.letsencrypt.org/directory.`. For production - `https://acme-v02.api.letsencrypt.org/directory`. (Default: `https://acme-v02.api.letsencrypt.org/directory`) |
 | `traefik_le_challenge_type` | Different ACME Challenges. It is possible to use `httpChallenge` and `dnsChallenge`. (Default: `httpChallenge`) |
 | `traefik_le_email` | Required parameter to get the certificate Let’s Encrypt. (Default: `NULL`) |
@@ -20,6 +20,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_providers` | Default: `{}` . Setup other providers support. Key is provider name, value - provider settings. |
 | `traefik_dashboard_port` | Default: `8080` . Insecure dashboard port. |
 | `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
+| `traefik_forwardedheaders` | Traefik configure for forwarded headers information. Uses for http and https entrypoints. (Default: `[]`). |
 
 ### Inventory variables
 #### HTTP service

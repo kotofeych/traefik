@@ -8,7 +8,7 @@ traefik_service_content = '''
 [Unit]
 Description=Traefik
 Documentation=https://docs.traefik.io
-AssertFileIsExecutable=/usr/bin/traefik_v2.4.8
+AssertFileIsExecutable=/usr/bin/traefik_v2.5.4
 AssertPathExists=/etc/traefik/traefik.yaml
 
 [Service]
@@ -16,7 +16,7 @@ Environment="AWS_PROFILE=default"
 Environment="AWS_ACCESS_KEY_ID=token_access"
 Environment="AWS_SECRET_ACCESS_KEY=token_secret"
 Type=notify
-ExecStart=/usr/bin/traefik_v2.4.8
+ExecStart=/usr/bin/traefik_v2.5.4
 Restart=always
 WatchdogSec=1s
 
@@ -48,8 +48,18 @@ traefik_yaml_content = '''
 entryPoints:
   http:
     address: ":80"
+    forwardedHeaders:
+        trustedIPs:
+        - 127.0.0.1/32
+        - 172.16.0.0/16
+        - 172.20.100.0/24
   https:
     address: ":443"
+    forwardedHeaders:
+        trustedIPs:
+        - 127.0.0.1/32
+        - 172.16.0.0/16
+        - 172.20.100.0/24
   traefik:
     address: ":8083"
   metrics:
@@ -285,7 +295,7 @@ http:
         servers:
           - url: http://172.16.1.10:9000
 '''
-test_1_http_s = '''
+test_1_http_and_https = '''
 ---
 http:
   routers:
@@ -335,7 +345,7 @@ check_files = {
     '/etc/traefik/config/dynamic/test_3_http.yaml': test_3_http,
     '/etc/traefik/config/dynamic/test_4_http.yaml': test_4_http,
     '/etc/traefik/config/dynamic/test_5_http.yaml': test_5_http,
-    '/etc/traefik/config/dynamic/test_1_http_s.yaml': test_1_http_s,
+    '/etc/traefik/config/dynamic/test_1_http_and_https.yaml': test_1_http_and_https,
     '/etc/traefik/config/dynamic/test_1_tcp.yaml': test_1_tcp
 }
 
@@ -348,7 +358,7 @@ def test_check_distribution(host):
 
 
 def test_check_file_traefik(host):
-    assert host.file("/usr/bin/traefik_v2.4.8").exists
+    assert host.file("/usr/bin/traefik_v2.5.4").exists
 
     for file_path, content in check_files.items():
         file_obj = host.file(file_path)

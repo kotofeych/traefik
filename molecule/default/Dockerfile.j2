@@ -23,7 +23,4 @@ RUN if [ $(command -v apt-get) ]; then apt-get update && apt-get install -y pyth
     elif [ $(command -v apk) ]; then apk update && apk add --no-cache python sudo bash ca-certificates; \
     elif [ $(command -v xbps-install) ]; then xbps-install -Syu && xbps-install -y python sudo bash ca-certificates iproute2 && xbps-remove -O; fi
 
-RUN mkdir -p /etc/traefik/config/dynamic && \
-    touch /etc/traefik/config/dynamic/{_global,will_removed_http_s}.yaml
-
 # ln -s /usr/bin/python /usr/bin/python3

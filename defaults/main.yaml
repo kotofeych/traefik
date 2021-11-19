@@ -1,6 +1,6 @@
 ---
 # Traefik info
-traefik_distr_ver: "v2.4.8"
+traefik_distr_ver: "v2.5.4"
 traefik_distr_os: "linux"
 traefik_distr_arch: "amd64"
 
@@ -41,3 +41,6 @@ traefik_metrics_port: 8082
 
 # Enabling custom providers
 traefik_providers: {}
+
+# Traefik parameters `forwardedHeaders` for entrypoints `http` and `https`
+traefik_forwardedheaders: []
