@@ -92,6 +92,7 @@
     quiet: true
 
 - name: Find installation traces traefik.
+  become: true
   block:
     - name: Check config file - "traefik.yaml".
       stat:
