@@ -20,7 +20,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_providers` | Default: `{}` . Setup other providers support. Key is provider name, value - provider settings. |
 | `traefik_dashboard_port` | Default: `8080` . Insecure dashboard port. |
 | `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
-| `traefik_forwardedheaders` | Traefik configure for forwarded headers information. Uses for http and https entrypoints. (Default: `[]`). |
+| `traefik_entrypoints_extra_parameters` | Configure parameters Traefik entrypoints . Uses for `http` and `https` entrypoints. (Default: `[]`). |
 
 ### Inventory variables
 #### HTTP service
@@ -95,6 +95,7 @@ Required variables: `name`, `services_address`, `port`.
 * `name` - The name of your configuration.
 * `services_address` - Service address.
 * `port` - Listening port for traffic setup.
+* `entrypoints_extra_parameters` - Configure parameters Traefik entrypoints.
 
 ```yaml
 # Example:
@@ -102,6 +103,12 @@ traefik_tcp_dynamic_config:
   - name: 'test_config__TCP__'
     services_address: 'git.example.com'
     port: 8086
+    entrypoints_extra_parameters:
+      forwardedHeaders:
+        trustedIPs:
+          - "127.0.0.1/32"
+          - "172.16.0.0/16"
+          - "172.20.100.0/24"
 ```
 #### Transport Layer Security (TLS)
 ##### TLS Let`s Encrypt

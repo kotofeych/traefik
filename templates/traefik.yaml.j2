@@ -2,13 +2,13 @@
 entryPoints:
   http:
     address: ":80"
-{% if traefik_forwardedheaders %}
-    {{ traefik_forwardedheaders | to_nice_yaml | indent(4) }}
+{% if traefik_entrypoints_extra_parameters %}
+    {{ traefik_entrypoints_extra_parameters | to_nice_yaml | indent(4) }}
 {%- endif %}
   https:
     address: ":443"
-{% if traefik_forwardedheaders %}
-    {{ traefik_forwardedheaders | to_nice_yaml | indent(4) }}
+{% if traefik_entrypoints_extra_parameters %}
+    {{ traefik_entrypoints_extra_parameters | to_nice_yaml | indent(4) }}
 {%- endif %}
   traefik:
     address: ":{{ traefik_dashboard_port }}"
@@ -21,6 +21,9 @@ entryPoints:
 {%- if EntryPoint['port'] is defined and EntryPoint['port'] %}
   {{ EntryPoint['name'] }}:
     address: ":{{ EntryPoint['port'] }}"
+{% if EntryPoint['entrypoints_extra_parameters'] is defined and EntryPoint['entrypoints_extra_parameters'] %}
+    {{ EntryPoint['entrypoints_extra_parameters'] | to_nice_yaml | indent(4) }}
+{%- endif %}
 {% endif %}
 {% endfor %}
 {%- endif %}

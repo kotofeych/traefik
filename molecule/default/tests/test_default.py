@@ -66,6 +66,11 @@ entryPoints:
     address: ":8081"
   test_1:
     address: ":8090"
+    forwardedHeaders:
+        trustedIPs:
+        - 127.0.0.1/32
+        - 172.16.0.0/16
+        - 172.20.100.0/24
 
 providers:
   file:
