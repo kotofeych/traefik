@@ -42,5 +42,5 @@ traefik_metrics_port: 8082
 # Enabling custom providers
 traefik_providers: {}
 
-# Traefik parameters `forwardedHeaders` for entrypoints `http` and `https`
-traefik_forwardedheaders: []
+# Traefik parameters for entrypoints `http` and `https`
+traefik_entrypoints_extra_parameters: []
