@@ -1,6 +1,6 @@
 ---
 # Traefik info
-traefik_distr_ver: "v2.5.4"
+traefik_distr_ver: "v2.6.1"
 traefik_distr_os: "linux"
 traefik_distr_arch: "amd64"
 
@@ -44,3 +44,6 @@ traefik_providers: {}
 
 # Traefik parameters for entrypoints `http` and `https`
 traefik_entrypoints_extra_parameters: []
+
+# Advanced settings management
+traefik_http3: true

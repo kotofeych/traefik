@@ -7,6 +7,9 @@ entryPoints:
 {%- endif %}
   https:
     address: ":443"
+{% if traefik_http3 %}
+    http3: {}
+{% endif %}
 {% if traefik_entrypoints_extra_parameters %}
     {{ traefik_entrypoints_extra_parameters | to_nice_yaml | indent(4) }}
 {%- endif %}
@@ -75,3 +78,8 @@ api:
 
 log:
   level: {{ traefik_log_level }}
+
+{% if traefik_http3 %}
+experimental:
+  http3: true
+{% endif %}
