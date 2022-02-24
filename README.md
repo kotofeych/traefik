@@ -6,7 +6,7 @@ This ansible role intended for setting on the host Traefik.
 ### Defaults variables
 | **Inventory**               | **Description**             |
 | --------------------------- | --------------------------- |
-| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.5.4`) |
+| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.6.1`) |
 | `traefik_distr_os` | Operating system. (Default: `linux`) |
 | `traefik_distr_arch` | OS architecture. (Default: `amd64`) |
 | `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.5.4/traefik_v2.5.4_linux_amd64.tar.gz`) |
@@ -21,6 +21,7 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_dashboard_port` | Default: `8080` . Insecure dashboard port. |
 | `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
 | `traefik_entrypoints_extra_parameters` | Configure parameters Traefik entrypoints . Uses for `http` and `https` entrypoints. (Default: `[]`). |
+| `traefik_http3` | Enable Support http3. Default: `true` |
 
 ### Inventory variables
 #### HTTP service

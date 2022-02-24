@@ -14,7 +14,7 @@ lint: |
   flake8 molecule/
   ansible-lint
 platforms:
-  - name: Ubuntu-18.04
+  - name: Ubuntu-20.04
     image: vstconsulting/images:ubuntu
   - name: Centos-7
     image: vstconsulting/images:centos7

@@ -8,7 +8,7 @@ traefik_service_content = '''
 [Unit]
 Description=Traefik
 Documentation=https://docs.traefik.io
-AssertFileIsExecutable=/usr/bin/traefik_v2.5.4
+AssertFileIsExecutable=/usr/bin/traefik_v2.6.1
 AssertPathExists=/etc/traefik/traefik.yaml
 
 [Service]
@@ -16,7 +16,7 @@ Environment="AWS_PROFILE=default"
 Environment="AWS_ACCESS_KEY_ID=token_access"
 Environment="AWS_SECRET_ACCESS_KEY=token_secret"
 Type=notify
-ExecStart=/usr/bin/traefik_v2.5.4
+ExecStart=/usr/bin/traefik_v2.6.1
 Restart=always
 WatchdogSec=1s
 
@@ -55,6 +55,7 @@ entryPoints:
         - 172.20.100.0/24
   https:
     address: ":443"
+    http3: {}
     forwardedHeaders:
         trustedIPs:
         - 127.0.0.1/32
@@ -109,6 +110,9 @@ api:
 
 log:
   level: DEBUG
+
+experimental:
+  http3: true
 '''
 default_crt = '''
 -----BEGIN CERTIFICATE-----
@@ -363,7 +367,7 @@ def test_check_distribution(host):
 
 
 def test_check_file_traefik(host):
-    assert host.file("/usr/bin/traefik_v2.5.4").exists
+    assert host.file("/usr/bin/traefik_v2.6.1").exists
 
     for file_path, content in check_files.items():
         file_obj = host.file(file_path)

@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
@@ -28,4 +28,4 @@ jobs:
 
       - name: Test with molecule with Ansible ${{ matrix.ansible-version }}
         run: |
-          tox -e py37-ansible${{ matrix.ansible-version }}
+          tox -e py38-ansible${{ matrix.ansible-version }}
