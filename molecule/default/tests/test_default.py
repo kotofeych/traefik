@@ -8,7 +8,7 @@ traefik_service_content = '''
 [Unit]
 Description=Traefik
 Documentation=https://docs.traefik.io
-AssertFileIsExecutable=/usr/bin/traefik_v2.6.1
+AssertFileIsExecutable=/usr/bin/traefik_v2.7.0
 AssertPathExists=/etc/traefik/traefik.yaml
 
 [Service]
@@ -16,7 +16,7 @@ Environment="AWS_PROFILE=default"
 Environment="AWS_ACCESS_KEY_ID=token_access"
 Environment="AWS_SECRET_ACCESS_KEY=token_secret"
 Type=notify
-ExecStart=/usr/bin/traefik_v2.6.1
+ExecStart=/usr/bin/traefik_v2.7.0
 Restart=always
 WatchdogSec=1s
 
@@ -35,6 +35,25 @@ http:
                 customRequestHeaders:
                     X-Forwarded-Protocol: "https"
                     X-Forwarded-Proto: "https"
+        Middleware00:
+            addPrefix:
+                prefix: foobar
+        Middleware01:
+            basicAuth:
+                headerField: foobar
+                realm: foobar
+                removeHeader: true
+                users:
+                - foobar
+                - foobar
+                usersFile: foobar
+        Middleware02:
+            buffering:
+                maxRequestBodyBytes: 42
+                maxResponseBodyBytes: 42
+                memRequestBodyBytes: 42
+                memResponseBodyBytes: 42
+                retryExpression: foobar
 
 tls:
     stores:
@@ -222,7 +241,6 @@ http:
       tls:
         {}
 
-
   services:
     test_2:
       loadBalancer:
@@ -304,6 +322,85 @@ http:
         servers:
           - url: http://172.16.1.10:9000
 '''
+test_6_http = '''
+---
+http:
+  routers:
+    http_test_6:
+      rule: Host(`dom1.example.com`)
+      entrypoints:
+        - http
+      service: test_6
+      middlewares:
+      - Middlewares_http00
+      - Middlewares_http01
+
+  services:
+    test_6:
+      loadBalancer:
+        servers:
+          - url: http://172.16.1.10:9000
+'''
+test_7_http = '''
+---
+http:
+  routers:
+    http_test_7:
+      rule: Host(`dom1.example.com`)
+      entrypoints:
+        - http
+      service: test_7
+      middlewares:
+      - redirect-http-to-https
+    https_test_7:
+      rule: Host(`dom1.example.com`)
+      entrypoints:
+        - https
+      service: test_7
+      middlewares:
+      - proxy-proto-headers
+      - Middlewares_https00
+      - Middlewares_https01
+      tls:
+        {}
+
+  services:
+    test_7:
+      loadBalancer:
+        servers:
+          - url: http://172.16.1.10:9000
+'''
+test_8_http = '''
+---
+http:
+  routers:
+    http_test_8:
+      rule: Host(`dom1.example.com`)
+      entrypoints:
+        - http
+      service: test_8
+      middlewares:
+      - Middlewares_http00
+      - Middlewares_http01
+      - redirect-http-to-https
+    https_test_8:
+      rule: Host(`dom1.example.com`)
+      entrypoints:
+        - https
+      service: test_8
+      middlewares:
+      - proxy-proto-headers
+      - Middlewares_https00
+      - Middlewares_https01
+      tls:
+        {}
+
+  services:
+    test_8:
+      loadBalancer:
+        servers:
+          - url: http://172.16.1.10:9000
+'''
 test_1_http_and_https = '''
 ---
 http:
@@ -354,6 +451,9 @@ check_files = {
     '/etc/traefik/config/dynamic/test_3_http.yaml': test_3_http,
     '/etc/traefik/config/dynamic/test_4_http.yaml': test_4_http,
     '/etc/traefik/config/dynamic/test_5_http.yaml': test_5_http,
+    '/etc/traefik/config/dynamic/test_6_http.yaml': test_6_http,
+    '/etc/traefik/config/dynamic/test_7_http.yaml': test_7_http,
+    '/etc/traefik/config/dynamic/test_8_http.yaml': test_8_http,
     '/etc/traefik/config/dynamic/test_1_http_and_https.yaml': test_1_http_and_https,
     '/etc/traefik/config/dynamic/test_1_tcp.yaml': test_1_tcp
 }
@@ -367,7 +467,7 @@ def test_check_distribution(host):
 
 
 def test_check_file_traefik(host):
-    assert host.file("/usr/bin/traefik_v2.6.1").exists
+    assert host.file("/usr/bin/traefik_v2.7.0").exists
 
     for file_path, content in check_files.items():
         file_obj = host.file(file_path)
