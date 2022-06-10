@@ -6,7 +6,7 @@ This ansible role intended for setting on the host Traefik.
 ### Defaults variables
 | **Inventory**               | **Description**             |
 | --------------------------- | --------------------------- |
-| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.6.1`) |
+| `traefik_distr_ver` | The version of Traefik used. (Default: `v2.7.0`) |
 | `traefik_distr_os` | Operating system. (Default: `linux`) |
 | `traefik_distr_arch` | OS architecture. (Default: `amd64`) |
 | `traefik_url_release` | Traefik Archive URL. (Default: `https://github.com/containous/traefik/releases/download/v2.5.4/traefik_v2.5.4_linux_amd64.tar.gz`) |
@@ -22,6 +22,8 @@ This ansible role intended for setting on the host Traefik.
 | `traefik_metrics_port` | Default: `8082` . Insecure metrics port for prometheus. |
 | `traefik_entrypoints_extra_parameters` | Configure parameters Traefik entrypoints . Uses for `http` and `https` entrypoints. (Default: `[]`). |
 | `traefik_http3` | Enable Support http3. Default: `true` |
+| `custom_global_http_middlewares` | General list of customization middleware for `http`. Specified in yaml format. |
+
 
 ### Inventory variables
 #### HTTP service
@@ -30,6 +32,7 @@ Required variables: `name`, `services_url`, `domain`.
 * `name` - The name of your configuration.
 * `services_url` - Service address.
 * `domain` or `raw_domain` - The domain on which the service will run.
+* `middlewares_http` or `middlewares_https` - Listing the names of the required middlewares. `middlewares_https` used with `tls` or `tls_resolver`.
 
 [Rule http. Resource link](https://doc.traefik.io/traefik/routing/routers/#rule)
 
@@ -42,10 +45,13 @@ Required parameters: `main` and `sans`.
 ```yaml
 # Example:
 traefik_http_dynamic_config:
-  # http, no certificate
+  # http, no certificate but with middlewares
   - name: 'name_config__HTTP__'
     services_url: 'http://172.16.1.10:9000'
     domain: 'test-http.example.com'
+    middlewares_http:
+      - "Middlewares_http00"
+      - "Middlewares_http01"
   # https with Let`s Encrypt cert + traefik rule custom host
   - name: 'name_config__HTTPS__1'
     services_url: 'http://172.16.1.10:9000'
@@ -62,11 +68,14 @@ traefik_http_dynamic_config:
     tls_resolver:
       main: 'testdomain.example.com'
       sans: '*.testdomain.example.com'
-  # https with default cert
+  # https with default cert and middlewares for https
   - name: 'name_config__HTTPS__2'
     services_url: 'http://172.16.1.10:9000'
     domain: 'testdomain2.example.com'
     tls: {}
+    middlewares_https:
+      - "Middlewares_https00"
+      - "Middlewares_https01"
   # https with Let`s Encrypt auto domain cert + traefik ruled Host
   - name: 'name_config__HTTPS__3'
     services_url: 'http://172.16.1.10:9000'

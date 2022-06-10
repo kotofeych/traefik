@@ -1,6 +1,6 @@
 ---
 # Traefik info
-traefik_distr_ver: "v2.6.1"
+traefik_distr_ver: "v2.7.0"
 traefik_distr_os: "linux"
 traefik_distr_arch: "amd64"
 

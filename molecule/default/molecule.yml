@@ -15,9 +15,9 @@ lint: |
   ansible-lint
 platforms:
   - name: Ubuntu-20.04
-    image: vstconsulting/images:ubuntu
+    image: registry.gitlab.com/vstconsulting/images:python
   - name: Centos-7
-    image: vstconsulting/images:centos7
+    image: registry.gitlab.com/vstconsulting/images:centos7
 provisioner:
   name: ansible
   log: true
