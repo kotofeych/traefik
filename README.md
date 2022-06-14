@@ -32,7 +32,7 @@ Required variables: `name`, `services_url`, `domain`.
 * `name` - The name of your configuration.
 * `services_url` - Service address.
 * `domain` or `raw_domain` - The domain on which the service will run.
-* `middlewares_http` or `middlewares_https` - Listing the names of the required middlewares. `middlewares_https` used with `tls` or `tls_resolver`.
+* `middlewares` - Listing the names of the required middlewares. 
 
 [Rule http. Resource link](https://doc.traefik.io/traefik/routing/routers/#rule)
 
@@ -49,7 +49,7 @@ traefik_http_dynamic_config:
   - name: 'name_config__HTTP__'
     services_url: 'http://172.16.1.10:9000'
     domain: 'test-http.example.com'
-    middlewares_http:
+    middlewares:
       - "Middlewares_http00"
       - "Middlewares_http01"
   # https with Let`s Encrypt cert + traefik rule custom host
@@ -73,7 +73,7 @@ traefik_http_dynamic_config:
     services_url: 'http://172.16.1.10:9000'
     domain: 'testdomain2.example.com'
     tls: {}
-    middlewares_https:
+    middlewares:
       - "Middlewares_https00"
       - "Middlewares_https01"
   # https with Let`s Encrypt auto domain cert + traefik ruled Host

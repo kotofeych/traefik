@@ -9,7 +9,7 @@ http:
                 customRequestHeaders:
                     X-Forwarded-Protocol: "https"
                     X-Forwarded-Proto: "https"
-        {% if custom_global_http_middlewares -%}
+        {% if custom_global_http_middlewares is defined and custom_global_http_middlewares -%}
             {{ custom_global_http_middlewares | to_nice_yaml | indent(8) }}
         {%- endif %}
 

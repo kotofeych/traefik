@@ -370,37 +370,6 @@ http:
         servers:
           - url: http://172.16.1.10:9000
 '''
-test_8_http = '''
----
-http:
-  routers:
-    http_test_8:
-      rule: Host(`dom1.example.com`)
-      entrypoints:
-        - http
-      service: test_8
-      middlewares:
-      - Middlewares_http00
-      - Middlewares_http01
-      - redirect-http-to-https
-    https_test_8:
-      rule: Host(`dom1.example.com`)
-      entrypoints:
-        - https
-      service: test_8
-      middlewares:
-      - proxy-proto-headers
-      - Middlewares_https00
-      - Middlewares_https01
-      tls:
-        {}
-
-  services:
-    test_8:
-      loadBalancer:
-        servers:
-          - url: http://172.16.1.10:9000
-'''
 test_1_http_and_https = '''
 ---
 http:
@@ -453,7 +422,6 @@ check_files = {
     '/etc/traefik/config/dynamic/test_5_http.yaml': test_5_http,
     '/etc/traefik/config/dynamic/test_6_http.yaml': test_6_http,
     '/etc/traefik/config/dynamic/test_7_http.yaml': test_7_http,
-    '/etc/traefik/config/dynamic/test_8_http.yaml': test_8_http,
     '/etc/traefik/config/dynamic/test_1_http_and_https.yaml': test_1_http_and_https,
     '/etc/traefik/config/dynamic/test_1_tcp.yaml': test_1_tcp
 }
