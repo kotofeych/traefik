@@ -39,7 +39,8 @@ http:
 {% elif item.tls_simple_acme is defined and item.tls_simple_acme %}
         certResolver: default_le_resolver
 {% endif %}
-{% else %}
+
+{%- else %}
 http:
   routers:
     http_{{ item.name }}:
