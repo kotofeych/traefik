@@ -1,4 +1,5 @@
 ---
+{% if item.tls is defined or item.tls_resolver is defined or item.tls_simple_acme is defined %}
 http:
   routers:
     http_{{ item.name }}:
@@ -10,13 +11,7 @@ http:
       entrypoints:
         - http
       service: {{ item.name }}
-{% if item.tls is defined or item.tls_resolver is defined or item.tls_simple_acme is defined or item.middlewares is defined %}
       middlewares:
-{% endif %}
-{% if (item.middlewares is defined) and (item.tls is not defined and item.tls_resolver is not defined and item.tls_simple_acme is not defined) %}
-      {{ item.middlewares | to_nice_yaml | indent(6) }}
-{%- endif %}
-{% if item.tls is defined or item.tls_resolver is defined or item.tls_simple_acme is defined %}
       - redirect-http-to-https
     https_{{ item.name }}:
 {% if item.raw_domain is defined and item.raw_domain %}
@@ -29,30 +24,45 @@ http:
       service: {{ item.name }}
       middlewares:
       - proxy-proto-headers
-{% endif %}
-{% if item.tls is defined and item.tls_resolver is undefined %}
 {% if item.middlewares is defined %}
       {{ item.middlewares | to_nice_yaml | indent(6) -}}
 {%- endif %}
       tls:
+{% if item.tls is defined and item.tls_resolver is undefined %}
         {{ item.tls | to_nice_yaml | indent(8) -}}
 {% elif item.tls_resolver is defined and item.tls_resolver %}
-      tls:
         certResolver: default_le_resolver
         domains:
           - main: {{ item.tls_resolver.main }}
             sans:
               - '{{ item.tls_resolver.sans }}'
 {% elif item.tls_simple_acme is defined and item.tls_simple_acme %}
-      tls:
         certResolver: default_le_resolver
+{% endif %}
+
+{%- else %}
+http:
+  routers:
+    http_{{ item.name }}:
+{% if item.raw_domain is defined and item.raw_domain %}
+      rule: {{ item.raw_domain }}
+{% elif item.domain is defined and item.domain %}
+      rule: Host(`{{ item.domain }}`)
+{% endif %}
+      entrypoints:
+        - http
+      service: {{ item.name }}
+{% if item.middlewares is defined and item.middlewares %}
+      middlewares:
+      {{ item.middlewares | to_nice_yaml | indent(6) }}
+{%- endif %}
 {%- endif %}
 
   services:
     {{ item.name }}:
       loadBalancer:
 {% if item.loadBalancerAdditional is defined %}
-        {{ item.loadBalancerAdditional | to_nice_yaml | indent(8) }}
+      {{ item.loadBalancerAdditional | to_nice_yaml | indent(8) }}
 {%- endif %}
         servers:
           - url: {{ item.services_url }}
