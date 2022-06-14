@@ -42,24 +42,14 @@ all:
       - name: 'test_6'
         services_url: 'http://172.16.1.10:9000'
         domain: 'dom1.example.com'
-        middlewares_http:
+        middlewares:
           - "Middlewares_http00"
           - "Middlewares_http01"
       - name: 'test_7'
         services_url: 'http://172.16.1.10:9000'
         domain: 'dom1.example.com'
         tls: {}
-        middlewares_https:
-          - "Middlewares_https00"
-          - "Middlewares_https01"
-      - name: 'test_8'
-        services_url: 'http://172.16.1.10:9000'
-        domain: 'dom1.example.com'
-        tls: {}
-        middlewares_http:
-          - "Middlewares_http00"
-          - "Middlewares_http01"
-        middlewares_https:
+        middlewares:
           - "Middlewares_https00"
           - "Middlewares_https01"
     traefik_http_and_https_config:
